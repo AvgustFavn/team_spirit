@@ -53,7 +53,7 @@ async def start(message: types.Message):
         • Запрещено отправлять мамонтам свои реквизиты\n
         • Запрещено принимать оплату на свои реквизиты\n
         • Запрещено отправлять мамонтам свои тех. поддержки\n
-        • Запрещен скам или попытки скама воркеров в любом его виде\n
+        • Запрещены попытки скама или скам воркеров в любом его виде\n
         • Заблокированные пользователи не получают выплаты\n
         • ТСы проекта не несут ответственности за блокировку кошельков\n
         • ТСы проекта имеют право не принимать в команду воркера без обёяснения причин\n
@@ -61,7 +61,6 @@ async def start(message: types.Message):
         ✅ Если ты согласен с правилами проекта, нажми на кнопку ниже\n
         """
         image_path = f'{BASE_DIR}\\images\\team_call.jpg'
-        print(image_path)
         with open(image_path, 'rb') as photo:
             await bot.send_photo(user_id, photo, caption=text, reply_markup=keyboard_markup)
 
@@ -115,7 +114,10 @@ async def about(message: types.Message):
         text = about_.text
     else:
         text = 'Пока тут ничего'
-    await bot.send_message(chat_id=user_id, text=text)
+
+    image_path = f'{BASE_DIR}\\images\\about.jpg'
+    with open(image_path, 'rb') as photo:
+        await bot.send_photo(user_id, photo, caption=text)
 
 @dp.message_handler(lambda message: message.text == 'Направления для работы 💼')
 async def category(message: types.Message):
@@ -173,7 +175,9 @@ async def admin(message: types.Message):
         keyboard_markup.add(types.InlineKeyboardButton('Выгнать воркера', callback_data='del_worker'))
         keyboard_markup.add(types.InlineKeyboardButton('Изменить "о нас"', callback_data='change_about'))
         keyboard_markup.add(types.InlineKeyboardButton('Все заявки', callback_data='bids'))
-        await bot.send_message(chat_id=user_id, text=text, reply_markup=keyboard_markup)
+        image_path = f'{BASE_DIR}\\images\\admin.jpg'
+        with open(image_path, 'rb') as photo:
+            await bot.send_photo(user_id, photo, caption=text, reply_markup=keyboard_markup)
 
 
 @dp.callback_query_handler(lambda c: c.data == 'add_profit')

