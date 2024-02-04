@@ -121,7 +121,7 @@ async def cats(id_tg):
     keyboard_markup.add(types.InlineKeyboardButton('🖼 нфт 🖼', callback_data=f'take_cat_нфт'))
     keyboard_markup.add(types.InlineKeyboardButton('🎀 эскорт 🎀', callback_data=f'take_cat_эскорт'))
     keyboard_markup.add(types.InlineKeyboardButton('🐟 фишинг 🐟', callback_data=f'take_cat_фишинг'))
-    image_path = f'{BASE_DIR}\\images\\direction.jpg'
+    image_path = f'{BASE_DIR}/images/direction.jpg'
     with open(image_path, 'rb') as photo:
         await bot.send_photo(id_tg, photo, caption=text, reply_markup=keyboard_markup)
 
@@ -148,7 +148,7 @@ async def profile_bd(user_id):
            f'Категория ворка: {user.category}\n' \
            f'Профитов, чистыми, на сумму: {share} USDT\n' \
            f'Полная сумма залетов: {full} USDT'
-    image_path = f'{BASE_DIR}\\images\\profile.jpg'
+    image_path = f'{BASE_DIR}/images/profile.jpg'
     with open(image_path, 'rb') as photo:
         await bot.send_photo(user_id, photo, caption=text, reply_markup=keyboard_markup)
 

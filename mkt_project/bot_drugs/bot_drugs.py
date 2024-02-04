@@ -1,3 +1,5 @@
+import sys
+sys.path.insert(0, '/team_spirit/mkt_project/')
 from random import randint
 
 from aiogram import Dispatcher, Bot, types
@@ -255,17 +257,19 @@ async def bonus(message: types.Message):
 
 async def main_menu(chat_id):
     tp = session.query(User).filter(User.status == 2).order_by(func.random()).first()
+    if tp == None:
+        tp = 'Никто'
     keyboard_markup = InlineKeyboardMarkup(row_width=2)
     keyboard_markup.add(InlineKeyboardButton('📍 Центр города 📍', callback_data='central'))
     keyboard_markup.add(InlineKeyboardButton('📍 Окраина города 📍', callback_data='outskirts'))
     keyboard_markup.add(InlineKeyboardButton('📍 До 2± км от города 📍', callback_data='2km'))
     keyboard_markup.add(InlineKeyboardButton('📍 До 5± км от города 📍', callback_data='5km'))
-    keyboard_markup.add(InlineKeyboardButton('Тех. Поддержка', url=f'https://t.me/{tp.username}'))
+    keyboard_markup.add(InlineKeyboardButton('Тех. Поддержка', url=f'https://t.me/{tp}'))
     keyboard_markup.add(InlineKeyboardButton('🛍 История покупок 🛍', callback_data='history'))
     keyboard_markup.add(InlineKeyboardButton('🎁 Про скидки 🎁', callback_data='bonus'))
-    keyboard_markup.add(InlineKeyboardButton('Трудоустройсво по залогу', url=f'https://t.me/{tp.username}'))
-    keyboard_markup.add(InlineKeyboardButton('Трудоустройсво по документам', url=f'https://t.me/{tp.username}'))
-    image_path = f'{BASE_DIR}\\images\\menu.jpg'
+    keyboard_markup.add(InlineKeyboardButton('Трудоустройсво по залогу', url=f'https://t.me/{tp}'))
+    keyboard_markup.add(InlineKeyboardButton('Трудоустройсво по документам', url=f'https://t.me/{tp}'))
+    image_path = f'{BASE_DIR}/images/menu.jpg'
     print(image_path)
     with open(image_path, 'rb') as photo:
         await bot.send_photo(chat_id, photo, caption='Главное меню 💊💉', reply_markup=keyboard_markup)

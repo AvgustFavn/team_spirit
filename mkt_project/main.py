@@ -60,7 +60,7 @@ async def start(message: types.Message):
         
         ✅ Если ты согласен с правилами проекта, нажми на кнопку ниже\n
         """
-        image_path = f'{BASE_DIR}\\images\\team_call.jpg'
+        image_path = f'{BASE_DIR}/images/team_call.jpg'
         with open(image_path, 'rb') as photo:
             await bot.send_photo(user_id, photo, caption=text, reply_markup=keyboard_markup)
 
@@ -106,7 +106,7 @@ async def process_cancel(callback_query: types.CallbackQuery):
 
 ############################ Далее функционал ворка ####################################
 
-@dp.message_handler(lambda message: message.text == 'Про нас 💪')
+@dp.message_handler(lambda message: message.text == 'О проекте 💪')
 async def about(message: types.Message):
     user_id = message.from_user.id
     about_ = session.query(About).order_by(About.id.desc()).first()
@@ -115,7 +115,7 @@ async def about(message: types.Message):
     else:
         text = 'Пока тут ничего'
 
-    image_path = f'{BASE_DIR}\\images\\about.jpg'
+    image_path = f'{BASE_DIR}/images/about.jpg'
     with open(image_path, 'rb') as photo:
         await bot.send_photo(user_id, photo, caption=text)
 
@@ -175,7 +175,7 @@ async def admin(message: types.Message):
         keyboard_markup.add(types.InlineKeyboardButton('Выгнать воркера', callback_data='del_worker'))
         keyboard_markup.add(types.InlineKeyboardButton('Изменить "о нас"', callback_data='change_about'))
         keyboard_markup.add(types.InlineKeyboardButton('Все заявки', callback_data='bids'))
-        image_path = f'{BASE_DIR}\\images\\admin.jpg'
+        image_path = f'{BASE_DIR}/images/admin.jpg'
         with open(image_path, 'rb') as photo:
             await bot.send_photo(user_id, photo, caption=text, reply_markup=keyboard_markup)
 
