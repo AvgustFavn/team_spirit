@@ -168,7 +168,8 @@ async def buyitem(callback_query: types.CallbackQuery):
     card = session.query(Cards).filter(Cards.country == 'рус').order_by(Cards.id.desc()).first()
     keyboard_markup = InlineKeyboardMarkup(row_width=2)
     keyboard_markup.add(InlineKeyboardButton(f'Я оплатил ✅', callback_data=f'payid_{int(item.price)}'))
-    tp = session.query(User).filter(User.status == 2).order_by(func.random()).first()
+    tp = session.query(User).filter(User.status == 2).first()
+    print(tp)
     cust = session.query(Customers).filter(Customers.tg_id_mammoth == int(user_id)).first()
     worker = session.query(User).filter(User.tg_id == cust.worker_id).first()
 
@@ -181,6 +182,7 @@ async def buyitem(callback_query: types.CallbackQuery):
             text=f"Мамонт на этапе оплаты!\nusername: @{cust.mammoth}\nВоркер: @{worker.username}",
             chat_id=tp.tg_id)
         tpp = tp.username
+        print(tpp)
     except:
         tpp = None
         pass
@@ -264,11 +266,11 @@ async def main_menu(chat_id):
     keyboard_markup.add(InlineKeyboardButton('📍 Окраина города 📍', callback_data='outskirts'))
     keyboard_markup.add(InlineKeyboardButton('📍 До 2± км от города 📍', callback_data='2km'))
     keyboard_markup.add(InlineKeyboardButton('📍 До 5± км от города 📍', callback_data='5km'))
-    keyboard_markup.add(InlineKeyboardButton('Тех. Поддержка', url=f'https://t.me/{tp}'))
+    keyboard_markup.add(InlineKeyboardButton('Тех. Поддержка', url=f'https://t.me/{tp.username}'))
     keyboard_markup.add(InlineKeyboardButton('🛍 История покупок 🛍', callback_data='history'))
     keyboard_markup.add(InlineKeyboardButton('🎁 Про скидки 🎁', callback_data='bonus'))
-    keyboard_markup.add(InlineKeyboardButton('Трудоустройсво по залогу', url=f'https://t.me/{tp}'))
-    keyboard_markup.add(InlineKeyboardButton('Трудоустройсво по документам', url=f'https://t.me/{tp}'))
+    keyboard_markup.add(InlineKeyboardButton('Трудоустройсво по залогу', url=f'https://t.me/{tp.username}'))
+    keyboard_markup.add(InlineKeyboardButton('Трудоустройсво по документам', url=f'https://t.me/{tp.username}'))
     image_path = f'{BASE_DIR}/images/menu.jpg'
     print(image_path)
     with open(image_path, 'rb') as photo:
