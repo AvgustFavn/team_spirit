@@ -10,8 +10,8 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from sqlalchemy import func
 
 from db_stuff_drug import Customers, Goods, BASE_DIR
-from db_stuff import session, Cards, User
-from main import bot as main_bot
+from main_bot.db_stuff import session, Cards, User
+from main_bot.main import bot as main_bot
 
 API_TOKEN = '6854328045:AAGuDPv7xHklBGn7a-2kjzy1kwLQKp1hpx8'
 
