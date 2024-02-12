@@ -1,3 +1,10 @@
+
+import os
+
+# Установка переменной окружения PYTHONPATH
+os.environ['PYTHONPATH'] = "/team_spirit/mkt_project"
+
+
 from datetime import datetime
 from pathlib import Path
 from random import randint

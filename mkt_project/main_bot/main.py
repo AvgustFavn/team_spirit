@@ -1,3 +1,8 @@
+import os
+
+# Установка переменной окружения PYTHONPATH
+os.environ['PYTHONPATH'] = "/team_spirit/mkt_project"
+
 import logging
 import re
 import sqlite3
@@ -9,12 +14,22 @@ from aiogram.contrib.middlewares.logging import LoggingMiddleware
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton
 from sqlalchemy import asc
 
-from back import is_worker, is_admin, user_reg, add_bid, send_new_bid, get_bids, is_employee, accept_bid, cancel_bid, \
-    cats, set_category, profile_bd, links_bd, is_sponsor, del_admin_bd, add_admin_bd, add_vbiv_bd, del_vbiv_bd, \
-    add_tp_bd, del_tp_bd, del_worker_bd, change_about_bd, card_bd, share_worker
-from db_stuff import session, About, Links, Profits, User, BASE_DIR, Domenes
+try:
+    from main_bot.back import is_worker, is_admin, user_reg, add_bid, send_new_bid, get_bids, is_employee, accept_bid, \
+        cancel_bid, \
+        cats, set_category, profile_bd, links_bd, is_sponsor, del_admin_bd, add_admin_bd, add_vbiv_bd, del_vbiv_bd, \
+        add_tp_bd, del_tp_bd, del_worker_bd, change_about_bd, card_bd, share_worker
+except:
+    from back import is_worker, is_admin, user_reg, add_bid, send_new_bid, get_bids, is_employee, accept_bid, cancel_bid, \
+        cats, set_category, profile_bd, links_bd, is_sponsor, del_admin_bd, add_admin_bd, add_vbiv_bd, del_vbiv_bd, \
+        add_tp_bd, del_tp_bd, del_worker_bd, change_about_bd, card_bd, share_worker
+    
+try:
+    from main_bot.db_stuff import session, About, Links, Profits, User, BASE_DIR, Domenes
+except:
+    from db_stuff import session, About, Links, Profits, User, BASE_DIR, Domenes
 
-API_TOKEN = '6930385521:AAFb7zZqIbOYAzDm4y2vKtSXiRttGS2ZmqA'
+API_TOKEN = '6362029327:AAGoXaoOjSk7wLaAQA3qQXKPcmmtePktO1k'
 
 logging.basicConfig(level=logging.INFO)
 

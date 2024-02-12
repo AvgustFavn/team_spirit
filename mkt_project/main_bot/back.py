@@ -1,9 +1,18 @@
-from datetime import timedelta
 
-from db_stuff import *
+
+import os
+
+# Установка переменной окружения PYTHONPATH
+os.environ['PYTHONPATH'] = "/team_spirit/mkt_project"
+
+from datetime import timedelta
+try:
+    from main_bot.db_stuff import *
+except:
+    from db_stuff import *
 from aiogram import types, Bot
 
-API_TOKEN = '6930385521:AAFb7zZqIbOYAzDm4y2vKtSXiRttGS2ZmqA'
+API_TOKEN = '6362029327:AAGoXaoOjSk7wLaAQA3qQXKPcmmtePktO1k'
 bot = Bot(token=API_TOKEN)
 
 
